@@ -75,3 +75,13 @@ data <- data %>%
 new_data <- data %>%
   select(artist, album, track, valence, arousal, aggressive, happy, party, relaxed, sad, acoustic, electronic, instrumental, timbreBright)
 
+# Read lyric data
+lyric_data <- read_csv("LIWCOutput/LIWCOutput.csv")
+
+# Merge all data together using left_join 
+final_merge_data <- df %>%
+  left_join(new_data, by = c("artist", "album", "track")) |>
+  left_join(lyric_data, by = c("artist", "album", "track"))|>
+  rename("funct"="function")
+
+
