@@ -50,3 +50,28 @@ extract_data <- function(current_filename) {
 # Apply function to all files and combine results into a data frame
 df <- map_dfr(full_list, extract_data)
 
+data <- read_csv("EssentiaOutput/EssentiaModelOutput.csv")
+
+
+data <- data %>%
+  mutate( #uses mutate to make desired changes to the data frame called data
+    valence = ave(deam_valence, emo_valence, muse_valence, FUN = mean),
+    arousal = ave(deam_arousal, emo_arousal, muse_arousal, FUN = mean),
+    aggressive = ave(nn_aggressive, eff_aggressive, FUN = mean),
+    happy = ave(nn_happy, eff_happy, FUN = mean),
+    party = ave(nn_party, eff_party, FUN = mean),
+    relaxed = ave(nn_relax, eff_relax, FUN = mean),
+    sad = ave(nn_sad, eff_sad, FUN = mean),
+    acoustic = ave(nn_acoustic, eff_acoustic, FUN = mean),
+    electronic = ave(nn_electronic, eff_electronic, FUN = mean),
+    instrumental = ave(nn_instrumental, eff_instrumental, FUN = mean)
+  )
+
+# Rename timbreBright column using dplyr's rename function
+data <- data %>%
+  rename(timbreBright = eff_timbre_bright)
+
+# Select relevant columns for the new dataset
+new_data <- data %>%
+  select(artist, album, track, valence, arousal, aggressive, happy, party, relaxed, sad, acoustic, electronic, instrumental, timbreBright)
+
