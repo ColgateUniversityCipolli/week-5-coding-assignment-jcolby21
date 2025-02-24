@@ -84,4 +84,16 @@ final_merge_data <- df %>%
   left_join(lyric_data, by = c("artist", "album", "track"))|>
   rename("funct"="function")
 
+#creates data set without Allentown
+final_data_no_allentown <- final_merge_data %>%
+  filter(track != "Allentown")
+#writes the csv file for all tracks other than Allentown
+write_csv(final_data_no_allentown, "trainingdata.csv") 
+
+#creates data set with just Allentown
+final_data_allentown <- final_merge_data %>%
+  filter(track == "Allentown")
+#writes the csv file for just Allentown
+write_csv(final_data_allentown, "testingdata.csv")
+
 
